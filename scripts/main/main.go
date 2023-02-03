@@ -10,7 +10,7 @@ import (
 var wg sync.WaitGroup
 
 func main() {
-	wg.Add(2)
+	wg.Add(3)
 	go func() {
 		defer wg.Done()
 		db := lib.GetInstance()
@@ -37,6 +37,22 @@ func main() {
 		}
 		time.Sleep(time.Second)
 		fmt.Println(id, nickname)
+	}()
+
+	go func() {
+		defer wg.Done()
+		redis := lib.RedisConnect
+		ctx := lib.Ctx
+		err := redis.Set(ctx, "key", "value", 0).Err()
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		val, err := redis.Get(ctx, "key").Result()
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println("key", val)
 	}()
 	wg.Wait()
 }
