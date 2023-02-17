@@ -17,3 +17,4 @@ pkg/
 *.log
 /api/runtime/
 /api/runtime/logs/
+/api/conf/
