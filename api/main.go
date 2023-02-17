@@ -39,7 +39,7 @@ func main() {
 	defer cancel()
 	err := ser.Shutdown(ctx)
 	if err != nil {
-
+		log.Println("server exit err!")
 	}
 	log.Println("server exit!")
 }

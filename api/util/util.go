@@ -48,6 +48,7 @@ func MD5(str string) string {
 */
 func FilePutContents(file string, content string, flag int) {
 	f, _ := os.OpenFile(file, flag, 0777)
+	defer f.Close()
 	writer := bufio.NewWriter(f)
 	writer.WriteString(content)
 	writer.Flush()
