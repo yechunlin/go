@@ -16,3 +16,4 @@
 pkg/
 scripts/conf
 api/conf
+api/runtime/logs
