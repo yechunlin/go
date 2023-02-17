@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"api/conf"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"os"
@@ -8,12 +9,10 @@ import (
 	"time"
 )
 
-const logFileDir = "E:/go2/api/runtime/logs"
-
 var logFileName = time.Now().Format("2006-01-02") + ".log"
 
 func GetInstance() *logrus.Logger {
-	logFile := path.Join(logFileDir, logFileName)
+	logFile := path.Join(conf.LOG_SAVE_DIR, logFileName)
 	file, err := os.OpenFile(logFile, os.O_CREATE|os.O_APPEND, os.ModeAppend)
 	if err != nil {
 
@@ -42,7 +41,7 @@ func (h *myHook) Levels() []logrus.Level {
 }
 
 func FormateLogger() gin.HandlerFunc {
-	logFile := path.Join(logFileDir, logFileName)
+	logFile := path.Join(conf.LOG_SAVE_DIR, logFileName)
 	file, err := os.OpenFile(logFile, os.O_CREATE|os.O_APPEND, os.ModeAppend)
 	if err != nil {
 
