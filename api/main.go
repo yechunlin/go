@@ -34,7 +34,7 @@ func main() {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
-	log.Panicln("server shutDown...")
+	log.Println("server shutDown...")
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	err := ser.Shutdown(ctx)
