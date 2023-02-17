@@ -11,7 +11,7 @@ import (
 
 var logFileName = time.Now().Format("2006-01-02") + ".log"
 
-func GetInstance() *logrus.Logger {
+func WriteLogStr(str string) {
 	logFile := path.Join(conf.LOG_SAVE_DIR, logFileName)
 	file, err := os.OpenFile(logFile, os.O_CREATE|os.O_RDWR|os.O_APPEND, os.ModeAppend)
 	if err != nil {
@@ -24,7 +24,7 @@ func GetInstance() *logrus.Logger {
 	logger.SetFormatter(&logrus.TextFormatter{
 		TimestampFormat: "2006-01-02 15:04:05",
 	})
-	return logger
+	logger.Info(str)
 }
 
 // 自定义hook

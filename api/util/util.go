@@ -1,9 +1,11 @@
 package util
 
 import (
+	"bufio"
 	"crypto/md5"
 	"encoding/hex"
 	"github.com/gin-gonic/gin"
+	"os"
 )
 
 //ReturnData
@@ -38,4 +40,15 @@ func MD5(str string) string {
 	s := md5.New()
 	s.Write([]byte(str))
 	return hex.EncodeToString(s.Sum(nil))
+}
+
+//FilePutContents
+/**
+写入文件
+*/
+func FilePutContents(file string, content string, flag int) {
+	f, _ := os.OpenFile(file, flag, 0777)
+	writer := bufio.NewWriter(f)
+	writer.WriteString(content)
+	writer.Flush()
 }
