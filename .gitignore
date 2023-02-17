@@ -15,3 +15,4 @@
 # vendor/
 pkg/
 scripts/conf
+api/conf
