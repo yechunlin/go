@@ -13,7 +13,7 @@ var logFileName = time.Now().Format("2006-01-02") + ".log"
 
 func WriteLogStr(str string) {
 	logFile := path.Join(conf.LOG_SAVE_DIR, logFileName)
-	file, err := os.OpenFile(logFile, os.O_CREATE|os.O_RDWR|os.O_APPEND, os.ModeAppend)
+	file, err := os.OpenFile(logFile, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0666)
 	if err != nil {
 
 	}
@@ -42,7 +42,7 @@ func (h *myHook) Levels() []logrus.Level {
 
 func FormateLogger() gin.HandlerFunc {
 	logFile := path.Join(conf.LOG_SAVE_DIR, logFileName)
-	file, err := os.OpenFile(logFile, os.O_CREATE|os.O_RDWR|os.O_APPEND, os.ModeAppend)
+	file, err := os.OpenFile(logFile, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0666)
 	if err != nil {
 
 	}
