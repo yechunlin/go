@@ -41,5 +41,5 @@ func main() {
 	if err != nil {
 
 	}
-	log.Panicln("server exit!")
+	log.Println("server exit!")
 }
