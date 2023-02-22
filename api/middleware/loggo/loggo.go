@@ -1,22 +1,28 @@
-package logger
+package loggo
 
 import (
 	"api/conf"
-	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	"os"
 	"path"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 var logFileName = time.Now().Format("2006-01-02") + ".log"
 
-func WriteLogStr(str string) {
+func OpenLogFile() *os.File {
 	logFile := path.Join(conf.LOG_SAVE_DIR, logFileName)
 	file, err := os.OpenFile(logFile, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0666)
 	if err != nil {
-
+		panic(err)
 	}
+	return file
+}
+
+func WriteLogStr(str string) {
+	file := OpenLogFile()
 	logger := logrus.New()
 	logger.SetOutput(file)
 	logger.SetLevel(logrus.DebugLevel)
@@ -41,11 +47,7 @@ func (h *myHook) Levels() []logrus.Level {
 }
 
 func FormateLogger() gin.HandlerFunc {
-	logFile := path.Join(conf.LOG_SAVE_DIR, logFileName)
-	file, err := os.OpenFile(logFile, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0666)
-	if err != nil {
-
-	}
+	file := OpenLogFile()
 	logger := logrus.New()
 	logger.SetOutput(file)
 	logger.SetLevel(logrus.DebugLevel)

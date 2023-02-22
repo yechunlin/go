@@ -4,8 +4,12 @@ import (
 	"bufio"
 	"crypto/md5"
 	"encoding/hex"
-	"github.com/gin-gonic/gin"
+	"math/rand"
 	"os"
+	"strconv"
+	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 //ReturnData
@@ -52,4 +56,43 @@ func FilePutContents(file string, content string, flag int) {
 	writer := bufio.NewWriter(f)
 	writer.WriteString(content)
 	writer.Flush()
+}
+
+//GetNowDatetime
+/**
+获取当前日期与时间
+*/
+func GetNowDatetime() string {
+	return time.Now().Format("2006-01-02 15:04:05")
+}
+
+// 字符串转int8
+func StrToInt8(str string) int {
+	intVal, _ := strconv.Atoi(str)
+	return intVal
+}
+
+// 获取随机字符串
+func GetRandStr(len int) string {
+	str := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	obj := []string{str}
+	var result string
+	rand.Seed(time.Now().UnixNano() + int64(rand.Intn(len)))
+	for i := 0; i < len; i++ {
+		result += obj[rand.Intn(len)]
+	}
+	return result
+}
+
+// 随机号码
+func GetRandMobileNumber() string {
+	number := []string{"0123456789"}
+	sortNumber := []string{"356789"}
+	mobile := "1"
+	rand.Seed(time.Now().UnixNano())
+	mobile += sortNumber[rand.Intn(len(sortNumber))]
+	for i := 0; i < 9; i++ {
+		mobile += number[rand.Intn(10)]
+	}
+	return mobile
 }
