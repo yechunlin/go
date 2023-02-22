@@ -13,7 +13,7 @@ import (
 
 var DbInstance *gorm.DB
 
-func ModelInit() {
+func MysqllInit() {
 	//写入文件
 	//file := loggo.OpenLogFile()
 	//输出控制台

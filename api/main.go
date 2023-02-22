@@ -13,7 +13,9 @@ func main() {
 	//设置模式
 	gin.SetMode(conf.APP_ENV)
 	//初始化数据库
-	model.ModelInit()
+	model.MysqllInit()
+	//初始化redis
+	model.RedisInit()
 	//初始化jobs
 	jobs.InitJobs()
 	//初始化路由，启动服务

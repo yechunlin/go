@@ -3,12 +3,15 @@ package controller
 import (
 	"api/conf"
 	"api/dao"
+	"api/extend/jwter"
+	"api/middleware/loggo"
 	"api/model"
 	"api/util"
 	"fmt"
-	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 /*
@@ -49,16 +52,49 @@ func Register(c *gin.Context) {
 	util.ReturnData(c, conf.API_SERVER_SUCCESS, "you are logged in", user)
 }
 
+// 登录
+func Login(c *gin.Context) {
+	nickname := c.DefaultPostForm("nickname", "")
+	password := c.DefaultPostForm("password", "")
+	user := dao.Users{}
+	where := "nickname = '" + nickname + "' and password = '" + util.MD5(password) + "'"
+	result := dao.GetOne(&user, where, []string{}, "id desc")
+	if result.RowsAffected == 0 {
+		util.ReturnData(c, conf.API_SERVER_SUCCESS, "账号密码有误", nil)
+		return
+	}
+	claims := jwter.UserClaims{
+		UserId: user.Id,
+		StandardClaims: jwt.StandardClaims{
+			NotBefore: time.Now().Unix(),
+			ExpiresAt: time.Now().Unix() + conf.JWT_EXPIRETED,
+			Issuer:    "ycl",
+		},
+	}
+	token, err := jwter.CreateToken(claims)
+	if err != nil {
+		loggo.WriteLogStr(err.Error())
+		panic("签名服务异常")
+	}
+	util.ReturnData(c, conf.API_SERVER_SUCCESS, "登录成功", gin.H{
+		"userId":       user.Id,
+		"token":        token,
+		"token_expire": conf.JWT_EXPIRETED,
+	})
+}
+
 /*
 *
 
 	查询用户信息
 */
 func GetInfo(c *gin.Context) {
-	id, err := strconv.ParseInt(c.DefaultPostForm("id", "0"), 10, 64)
-	if err != nil {
-		panic(err)
+	res, ok := c.Get("userId")
+	if !ok {
+		panic("请先登录")
 	}
+	id := int64(util.GetInterfaceToInt(res))
+
 	user := dao.Users{}
 	result := dao.GetUserInfoById(&user, []string{"nickname"}, id)
 	if result.Error != nil {
@@ -75,7 +111,7 @@ func GetUserList(c *gin.Context) {
 	page := util.StrToInt8(c.DefaultPostForm("page", "1"))
 	limit := util.StrToInt8(c.DefaultPostForm("limit", "5"))
 	list := dao.ListPageResult{}
-	result := dao.GetPage(&list, "", []string{}, "id desc", page, limit)
+	result := dao.GetPage(&list, "", []string{"id", "Nickname", "Mobile"}, "id desc", page, limit)
 	fmt.Println(result.RowsAffected)
 	util.ReturnData(c, conf.API_SERVER_SUCCESS, "获取成功", list)
 }

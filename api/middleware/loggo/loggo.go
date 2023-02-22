@@ -12,6 +12,7 @@ import (
 
 var logFileName = time.Now().Format("2006-01-02") + ".log"
 
+// 获取文件句柄
 func OpenLogFile() *os.File {
 	logFile := path.Join(conf.LOG_SAVE_DIR, logFileName)
 	file, err := os.OpenFile(logFile, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0666)
@@ -21,6 +22,7 @@ func OpenLogFile() *os.File {
 	return file
 }
 
+// 日志追踪 info
 func WriteLogStr(str string) {
 	file := OpenLogFile()
 	logger := logrus.New()
@@ -46,6 +48,7 @@ func (h *myHook) Levels() []logrus.Level {
 	return logrus.AllLevels
 }
 
+// 自定义日志中间件
 func FormateLogger() gin.HandlerFunc {
 	file := OpenLogFile()
 	logger := logrus.New()

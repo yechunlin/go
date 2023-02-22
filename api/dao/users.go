@@ -12,18 +12,19 @@ type Users struct {
 	Nickname   string
 	Mobile     string
 	Token      string
+	Password   string
 	CreateTime string `gorm:"column:createTime;type:datetime"`
 	Status     int    `gorm:"default:1"`
 }
 
 // 创建
 func CreateUser(user *Users) *gorm.DB {
-	return model.DbInstance.Select("Nickname", "Mobile", "Token").Create(&user)
+	return model.DbInstance.Select("Nickname", "Mobile", "Token", "Password").Create(&user)
 }
 
 // 批量创建
 func CreateUserBatch(users *[]Users) *gorm.DB {
-	return model.DbInstance.Select("Nickname", "Mobile", "Token").Create(&users)
+	return model.DbInstance.Select("Nickname", "Mobile", "Token", "Password").Create(&users)
 }
 
 // 查询 根据主键
@@ -32,13 +33,13 @@ func GetUserInfoById(user *Users, fields []string, id int64) *gorm.DB {
 }
 
 // 查询，单条
-func GetOne(user *Users, fields []string, order string) *gorm.DB {
-	return model.DbInstance.Select(fields).Order(order).Limit(1).Find(&user)
+func GetOne(user *Users, where string, fields []string, order string) *gorm.DB {
+	return model.DbInstance.Select(fields).Where(where).Order(order).Limit(1).Find(&user)
 }
 
 // 查询，获取全部 limit限制【0表示无限制】
-func GetAll(user *[]Users, fields []string, order string, limit int) *gorm.DB {
-	result := model.DbInstance.Select(fields).Order(order)
+func GetAll(user *[]Users, where string, fields []string, order string, limit int) *gorm.DB {
+	result := model.DbInstance.Select(fields).Where(where).Order(order)
 	if limit > 0 {
 		result.Limit(limit)
 	}

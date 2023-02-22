@@ -18,6 +18,7 @@ func (t Test) Run() {
 		Nickname: nickname,
 		Mobile:   mobile,
 		Token:    token,
+		Password: util.MD5(password),
 	}
 	result := dao.CreateUser(&user)
 	if result.Error != nil {

@@ -22,9 +22,9 @@ func routeConf() *gin.Engine {
 	user := r.Group("/user")
 	{
 		user.POST("/register", controller.Register)
-		//user.POST("/login", controller.Login)
+		user.POST("/login", controller.Login)
 	}
-	user.Use(auth.BaseApi())
+	user.Use(auth.AuthApi())
 	{
 		user.POST("/getInfo", controller.GetInfo)
 		user.POST("/userList", controller.GetUserList)
