@@ -73,26 +73,27 @@ func StrToInt8(str string) int {
 }
 
 // 获取随机字符串
-func GetRandStr(len int) string {
+func GetRandStr(l int) string {
 	str := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	obj := []string{str}
-	var result string
-	rand.Seed(time.Now().UnixNano() + int64(rand.Intn(len)))
-	for i := 0; i < len; i++ {
-		result += obj[rand.Intn(len)]
+	obj := []byte(str)
+	obj_len := len(obj)
+	result := []byte{}
+	rand.Seed(time.Now().UnixNano() + int64(rand.Intn(obj_len)))
+	for i := 0; i < l; i++ {
+		result = append(result, obj[rand.Intn(obj_len)])
 	}
-	return result
+	return string(result)
 }
 
 // 随机号码
 func GetRandMobileNumber() string {
-	number := []string{"0123456789"}
-	sortNumber := []string{"356789"}
-	mobile := "1"
+	number := []byte("0123456789")
+	sortNumber := []byte("356789")
+	mobile := []byte{}
 	rand.Seed(time.Now().UnixNano())
-	mobile += sortNumber[rand.Intn(len(sortNumber))]
+	mobile = append(mobile, sortNumber[rand.Intn(len(sortNumber))])
 	for i := 0; i < 9; i++ {
-		mobile += number[rand.Intn(10)]
+		mobile = append(mobile, number[rand.Intn(10)])
 	}
-	return mobile
+	return string(mobile)
 }
