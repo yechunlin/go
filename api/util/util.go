@@ -97,3 +97,11 @@ func GetRandMobileNumber() string {
 	}
 	return string(mobile)
 }
+
+// 获取两个整数之间的随机数
+func GetRandTwo(min int, max int) int {
+	off := max - min
+	rand.Seed(time.Now().UnixNano())
+	tmp := rand.Intn(off)
+	return tmp + min
+}

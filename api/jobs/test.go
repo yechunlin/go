@@ -9,7 +9,8 @@ import (
 type Test struct{}
 
 func (t Test) Run() {
-	nickname := util.GetRandStr(5)
+	tmp := util.GetRandTwo(5, 10)
+	nickname := util.GetRandStr(tmp)
 	password := "151604"
 	mobile := util.GetRandMobileNumber()
 	token := util.MD5(nickname + password + mobile)
