@@ -89,7 +89,7 @@ func GetRandStr(l int) string {
 func GetRandMobileNumber() string {
 	number := []byte("0123456789")
 	sortNumber := []byte("356789")
-	mobile := []byte{}
+	mobile := []byte{1}
 	rand.Seed(time.Now().UnixNano())
 	mobile = append(mobile, sortNumber[rand.Intn(len(sortNumber))])
 	for i := 0; i < 9; i++ {
