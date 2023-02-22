@@ -40,5 +40,6 @@ func RouteInit() {
 	server.BeforeBegin = func(add string) {
 		util.FilePutContents(conf.PID_FILE, strconv.Itoa(syscall.Getpid()), os.O_CREATE|os.O_RDWR)
 	}
+	loggo.WriteLogStr("服务启动")
 	server.ListenAndServe()
 }
